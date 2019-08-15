@@ -6,11 +6,12 @@ import { ToastContainer } from 'react-toastify'
 
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
+import Home from './components/pages/Home'
 
 import Navbar from './components/common/Navbar'
 
 import 'react-toastify/dist/ReactToastify.css'
-import 'bulma'
+import './style.scss'
 
 class App extends React.Component {
   render() {
@@ -23,6 +24,7 @@ class App extends React.Component {
         <Switch>
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
+          <Route path="/" component={Home} />
         </Switch>
       </Router>
     )
