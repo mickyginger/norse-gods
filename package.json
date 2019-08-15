@@ -1,0 +1,36 @@
+{
+  "name": "norse-gods",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:mickyginger/norse-gods.git",
+  "author": "Mike Hayden <mike.hayden@ga.co>",
+  "license": "MIT",
+  "scripts": {
+    "run:client": "webpack-dev-server --mode development",
+    "run:server": "nodemon",
+    "build": "webpack -p"
+  },
+  "dependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "express": "^4.17.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mongoose": "^5.6.9",
+    "node-sass": "^4.12.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "sass-loader": "^7.2.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.8.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.1.0",
+    "eslint-plugin-react": "^7.14.3"
+  }
+}
