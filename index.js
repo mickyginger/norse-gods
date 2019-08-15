@@ -1,10 +1,18 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
+
+const router = require('./config/routes')
+
+const { port, dbURI } = require('./config/environment')
 
 const app = express()
 
-mongoose.connect('mongodb://localhost:27017/norse-gods')
+mongoose.connect(dbURI, { useNewUrlParser: true })
 
-app.get('/', (req, res) => res.json({ message: 'Hello Odin!' }))
+app.use(bodyParser.json())
+app.use('/api', router)
 
-app.listen(4000, () => console.log('By Odin\'s Raven!'))
+app.listen(port, () => console.log('By Odin\'s Raven!'))
+
+module.exports = app
