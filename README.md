@@ -1,4 +1,6 @@
-# norse-gods
+# Norse Gods API
 A cool app for Scandinavian Gods of old
 
-Gabe "Hammer of Thor" Naughton
+## Contributors
+- Mike "Odin's Raven" Hayden
+- Gabe "Hammer of Thor" Naughton
