@@ -1,6 +1,8 @@
 import React from 'react'
-import axios from 'axios'
-import { toast } from 'react-toastify'
+// import axios from 'axios'
+// import { toast } from 'react-toastify'
+import { connect } from 'react-redux'
+import { loginUser } from '../../actions'
 
 import Auth from '../../lib/Auth'
 
@@ -25,16 +27,7 @@ class Login extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
 
-    axios.post('/api/login', this.state.formData)
-      .then(res => {
-        Auth.setToken(res.data.token)
-        toast.success(res.data.message)
-        this.props.history.push('/')
-      })
-      .catch(() => {
-        Auth.removeToken()
-        this.setState({ error: 'Invalid credentials' })
-      })
+    this.props.dispatch(loginUser(this.state.formData))
 
   }
 
@@ -77,4 +70,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login
+export default connect()(Login)
