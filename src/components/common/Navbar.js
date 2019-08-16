@@ -1,68 +1,58 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { logoutUser } from '../../actions/auth'
+import { toggleNavbar } from '../../actions/navbar'
 
-import Auth from '../../lib/Auth'
+const Navbar = ({ isAuthenticated, logout, toggleNavbar, navbarIsOpen }) => {
 
-class Navbar extends React.Component {
+  return (
+    <nav className="navbar">
+      <div className="container">
+        <div className="navbar-brand">
+          <Link to="/" className="navbar-item">
+            Home
+          </Link>
 
-  constructor() {
-    super()
+          <a
+            role="button"
+            className={`navbar-burger ${navbarIsOpen ? 'is-active' : ''}`}
+            onClick={toggleNavbar}
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
 
-    this.state = {
-      navbarOpen: false
-    }
+        </div>
 
-    this.logout = this.logout.bind(this)
-    this.toggleNavbar = this.toggleNavbar.bind(this)
-  }
-
-  logout() {
-    Auth.removeToken()
-    this.props.history.push('/')
-  }
-
-  toggleNavbar() {
-    this.setState({ navbarOpen: !this.state.navbarOpen })
-  }
-
-  componentDidUpdate(prevProps) {
-    if(prevProps.location.pathname !== this.props.location.pathname) {
-      this.setState({ navbarOpen: false })
-    }
-  }
-
-  render(){
-    return (
-      <nav className="navbar">
-        <div className="container">
-          <div className="navbar-brand">
-            <Link to="/" className="navbar-item">
-              Home
-            </Link>
-
-            <a
-              role="button"
-              className={`navbar-burger ${this.state.navbarOpen ? 'is-active' : ''}`}
-              onClick={this.toggleNavbar}
-            >
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-            </a>
-
-          </div>
-
-          <div className={`navbar-menu ${this.state.navbarOpen ? 'is-active' : ''}`}>
-            <div className="navbar-end">
-              {!Auth.isAuthenticated() && <Link to="/register" className="navbar-item">Register</Link>}
-              {!Auth.isAuthenticated() && <Link to="/login" className="navbar-item">Login</Link>}
-              {Auth.isAuthenticated() && <a onClick={this.logout} className="navbar-item">Logout</a>}
-            </div>
+        <div className={`navbar-menu ${navbarIsOpen ? 'is-active' : ''}`}>
+          <div className="navbar-end">
+            {!isAuthenticated && <Link to="/register" className="navbar-item">Register</Link>}
+            {!isAuthenticated && <Link to="/login" className="navbar-item">Login</Link>}
+            {isAuthenticated && <a onClick={logout} className="navbar-item">Logout</a>}
           </div>
         </div>
-      </nav>
-    )
+      </div>
+    </nav>
+  )
+}
+
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    navbarIsOpen: state.navbarIsOpen
   }
 }
 
-export default withRouter(Navbar)
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logoutUser()),
+    toggleNavbar: () => dispatch(toggleNavbar())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Navbar)

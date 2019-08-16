@@ -5,8 +5,9 @@ import thunkMiddleware from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from './reducers'
+import history from './history'
 
-import { HashRouter as Router, Switch, Route } from 'react-router-dom'
+import { Router, Switch, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
 import Register from './components/auth/Register'
@@ -28,7 +29,7 @@ class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Router>
+        <Router history={history}>
 
           <Navbar />
           <ToastContainer position="bottom-right" hideProgressBar={true} />
