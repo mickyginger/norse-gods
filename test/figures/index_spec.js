@@ -41,4 +41,18 @@ describe('GET /figures', () => {
         done()
       })
   })
+
+  it('should return the correct data types', done => {
+    api
+      .get('/api/figures')
+      .end((err, res) => {
+        res.body.forEach(figure => {
+          expect(figure.name).to.be.a('string')
+          expect(figure.oldNorse).to.be.a('string')
+          expect(figure.associatedWith).to.be.an('array')
+          expect(figure.home).to.be.a('string')
+        })
+        done()
+      })
+  })
 })
