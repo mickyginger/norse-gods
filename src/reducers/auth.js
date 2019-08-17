@@ -1,6 +1,6 @@
 import {
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
+  AUTH_SUCCESS,
+  AUTH_FAILURE,
   LOGOUT_USER,
   UPDATE_FORM_DATA
 } from '../actions/auth'
@@ -20,7 +20,7 @@ export default function auth(state = initialState, action) {
         formData: action.formData,
         errors: action.errors
       }
-    case LOGIN_FAILURE:
+    case AUTH_FAILURE:
       // make AJAX request
       return {
         ...state,
@@ -28,7 +28,7 @@ export default function auth(state = initialState, action) {
         payload: {},
         errors: action.errors
       }
-    case LOGIN_SUCCESS:
+    case AUTH_SUCCESS:
       // make AJAX request
       // save token in localStorage
       return {

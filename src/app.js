@@ -15,6 +15,7 @@ import Login from './components/auth/Login'
 import Home from './components/pages/Home'
 
 import Navbar from './components/common/Navbar'
+import Auth from './lib/Auth'
 
 import 'react-toastify/dist/ReactToastify.css'
 import './style.scss'
@@ -25,7 +26,16 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunkMiddleware))
 )
 
+import { authSuccess } from './actions/auth'
+
 class App extends React.Component {
+
+  componentDidMount() {
+    const token = Auth.getToken()
+
+    if(token) store.dispatch(authSuccess(token))
+  }
+
   render() {
     return (
       <Provider store={store}>

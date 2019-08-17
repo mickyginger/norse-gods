@@ -1,100 +1,99 @@
 import React from 'react'
-import axios from 'axios'
-import { toast } from 'react-toastify'
+import { connect } from 'react-redux'
+import { registerUser, updateFormData } from '../../actions/auth'
 
-class Register extends React.Component {
+const Register = ({ updateFormData, registerUser, formData, errors }) => {
 
-  constructor() {
-    super()
-    this.state = {
-      formData: {},
-      errors: {}
-    }
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+  function handleChange(e) {
+    formData = { ...formData, [e.target.name]: e.target.value }
+    errors = { ...errors, [e.target.name]: '' }
+    updateFormData(formData, errors)
   }
 
-  handleChange(e) {
-    const formData = { ...this.state.formData, [e.target.name]: e.target.value }
-    const errors = { ...this.state.errors, [e.target.name]: '' }
-    this.setState({ formData, errors })
-  }
-
-  handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault()
 
-    axios.post('/api/register', this.state.formData)
-      .then(res => {
-        toast.success(res.data.message)
-        this.props.history.push('/login')
-      })
-      .catch(err => this.setState({ errors: err.response.data.errors }))
+    registerUser(formData)
   }
 
-  render() {
-    return (
-      <section className="section">
-        <div className="container">
-          <form onSubmit={this.handleSubmit}>
-            <div className="field">
-              <label className="label">Username</label>
-              <div className="control">
-                <input
-                  className="input"
-                  name="username"
-                  placeholder="eg: leela3000"
-                  onChange={this.handleChange}
-                />
-              </div>
-              {this.state.errors.username && <small className="help is-danger">{this.state.errors.username}</small>}
+  return (
+    <section className="section">
+      <div className="container">
+        <form onSubmit={handleSubmit}>
+          <div className="field">
+            <label className="label">Username</label>
+            <div className="control">
+              <input
+                className="input"
+                name="username"
+                placeholder="eg: leela3000"
+                onChange={handleChange}
+              />
             </div>
-            <div className="field">
-              <label className="label">Email</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="email"
-                  name="email"
-                  placeholder="eg: leela3000@planetexpress.co.nny"
-                  onChange={this.handleChange}
-                />
-              </div>
-              {this.state.errors.email && <small className="help is-danger">{this.state.errors.email}</small>}
+            {errors.username && <small className="help is-danger">{errors.username}</small>}
+          </div>
+          <div className="field">
+            <label className="label">Email</label>
+            <div className="control">
+              <input
+                className="input"
+                type="email"
+                name="email"
+                placeholder="eg: leela3000@planetexpress.co.nny"
+                onChange={handleChange}
+              />
             </div>
-            <div className="field">
-              <label className="label">Password</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="password"
-                  name="password"
-                  placeholder="eg: ••••••••"
-                  onChange={this.handleChange}
-                />
-              </div>
-              {this.state.errors.password && <small className="help is-danger">{this.state.errors.password}</small>}
+            {errors.email && <small className="help is-danger">{errors.email}</small>}
+          </div>
+          <div className="field">
+            <label className="label">Password</label>
+            <div className="control">
+              <input
+                className="input"
+                type="password"
+                name="password"
+                placeholder="eg: ••••••••"
+                onChange={handleChange}
+              />
             </div>
-            <div className="field">
-              <label className="label">Password Confirmation</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="password"
-                  name="passwordConfirmation"
-                  placeholder="eg: ••••••••"
-                  onChange={this.handleChange}
-                />
-              </div>
-              {this.state.errors.passwordConfirmation && <small className="help is-danger">{this.state.errors.passwordConfirmation}</small>}
+            {errors.password && <small className="help is-danger">{errors.password}</small>}
+          </div>
+          <div className="field">
+            <label className="label">Password Confirmation</label>
+            <div className="control">
+              <input
+                className="input"
+                type="password"
+                name="passwordConfirmation"
+                placeholder="eg: ••••••••"
+                onChange={handleChange}
+              />
             </div>
+            {errors.passwordConfirmation && <small className="help is-danger">{errors.passwordConfirmation}</small>}
+          </div>
 
-            <button className="button">Submit</button>
-          </form>
-        </div>
-      </section>
-    )
+          <button className="button">Submit</button>
+        </form>
+      </div>
+    </section>
+  )
+}
+
+const mapStateToProps = state => {
+  return {
+    formData: state.auth.formData,
+    errors: state.auth.errors
   }
 }
 
-export default Register
+const mapDispatchToProps = dispatch => {
+  return {
+    registerUser: (credentials) => dispatch(registerUser(credentials)),
+    updateFormData: (formData, errors) => dispatch(updateFormData(formData, errors))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Register)

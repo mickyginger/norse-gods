@@ -3,29 +3,23 @@ import Auth from '../lib/Auth'
 import history from '../history'
 import { toast } from 'react-toastify'
 
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_FAILURE = 'LOGIN_FAILURE'
+export const AUTH_FAILURE = 'AUTH_FAILURE'
+export const AUTH_SUCCESS = 'AUTH_SUCCESS'
 export const LOGOUT_USER = 'LOGOUT_USER'
 export const UPDATE_FORM_DATA = 'UPDATE_FORM_DATA'
 
-function loginSuccess(token, message) {
+export function authSuccess(token) {
   Auth.setToken(token)
-  history.push('/')
-  toast.success(message)
   return {
-    type: LOGIN_SUCCESS,
+    type: AUTH_SUCCESS,
     payload: Auth.getPayload()
   }
 }
 
-function loginFailure() {
+function authFailure(errors) {
   Auth.removeToken()
-  const errors = {
-    email: 'Invalid credentials',
-    password: 'Invalid credentials'
-  }
   return {
-    type: LOGIN_FAILURE,
+    type: AUTH_FAILURE,
     errors
   }
 }
@@ -34,8 +28,30 @@ export function loginUser(credentials) {
   return function(dispatch) {
 
     return axios.post('/api/login', credentials)
-      .then(res => dispatch(loginSuccess(res.data.token, res.data.message)))
-      .catch(() => dispatch(loginFailure()))
+      .then(res => {
+        history.push('/')
+        toast.success(res.data.message)
+        dispatch(authSuccess(res.data.token))
+      })
+      .catch(() => {
+        const errors = {
+          email: 'Invalid credentials',
+          password: 'Invalid credentials'
+        }
+        dispatch(authFailure(errors))
+      })
+  }
+}
+
+export function registerUser(credentials) {
+  return function(dispatch) {
+
+    return axios.post('/api/register', credentials)
+      .then(res => {
+        toast.success(res.data.message)
+        history.push('/login')
+      })
+      .catch(err => dispatch(authFailure(err.response.data.errors)))
   }
 }
 
