@@ -9,7 +9,8 @@
     "run:client": "webpack-dev-server --mode development",
     "run:server": "nodemon",
     "build": "webpack -p",
-    "test": "mocha test/**/*_spec.js --require test/helper --recursive --exit"
+    "test": "mocha test/**/*_spec.js --require test/helper --recursive --exit",
+    "start": "yarn build && node index"
   },
   "dependencies": {
     "@babel/core": "^7.5.5",

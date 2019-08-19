@@ -10,6 +10,9 @@ const app = express()
 
 mongoose.connect(dbURI, { useNewUrlParser: true })
 
+// look for static files in the `dist` folder
+// static files are files like index.html, images, fonts, styles etc...
+app.use(express.static(`${__dirname}/dist`))
 app.use(bodyParser.json())
 app.use('/api', router)
 
