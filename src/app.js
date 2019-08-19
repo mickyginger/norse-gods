@@ -13,11 +13,14 @@ import { ToastContainer } from 'react-toastify'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Home from './components/pages/Home'
+import FiguresIndex from './components/figures/Index.js'
 
 import Navbar from './components/common/Navbar'
 import Auth from './lib/Auth'
 
 import 'react-toastify/dist/ReactToastify.css'
+
+import 'bulma'
 import './style.scss'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -45,6 +48,7 @@ class App extends React.Component {
           <ToastContainer position="bottom-right" hideProgressBar={true} />
 
           <Switch>
+            <Route path="/figures" component={FiguresIndex} />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Route path="/" component={Home} />
