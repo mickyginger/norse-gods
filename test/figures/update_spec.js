@@ -1,6 +1,7 @@
 /* global api, describe, it, expect, beforeEach, afterEach */
 
 const Figure = require('../../models/Figure')
+const User = require('../../models/User')
 const jwt = require('jsonwebtoken')
 const { secret } = require('../../config/environment')
 
@@ -13,12 +14,23 @@ const testData = {
   home: 'Asgard'
 }
 
+const userData = {
+  username: 'test',
+  email: 'test@test.test',
+  password: 'test',
+  passwordConfirmation: 'test'
+}
+
 describe('PUT /figures/:id', () => {
-  let figure = null
-  const token = jwt.sign({ sub: 123 }, secret, { expiresIn: '6h' })
+  let figure, token
 
   beforeEach(done => {
-    Figure.create(figureData)
+    User.create(userData)
+      .then(user => {
+        token = jwt.sign({ sub: user._id }, secret, { expiresIn: '6h' })
+
+        return Figure.create(figureData)
+      })
       .then(figures => {
         figure = figures[0]
         done()
@@ -26,7 +38,8 @@ describe('PUT /figures/:id', () => {
   })
 
   afterEach(done => {
-    Figure.remove({})
+    User.remove({})
+      .then(() => Figure.remove({}))
       .then(() => done())
   })
 

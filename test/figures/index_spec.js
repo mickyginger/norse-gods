@@ -47,6 +47,7 @@ describe('GET /figures', () => {
       .get('/api/figures')
       .end((err, res) => {
         res.body.forEach(figure => {
+
           expect(figure.name).to.be.a('string')
           expect(figure.oldNorse).to.be.a('string')
           expect(figure.associatedWith).to.be.an('array')

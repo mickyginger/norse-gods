@@ -1,24 +1,47 @@
 /* global api, describe, it, expect, afterEach */
 const Figure = require('../../models/Figure')
+const User = require('../../models/User')
 const jwt = require('jsonwebtoken')
 const { secret } = require('../../config/environment')
 
 const figureData = require('../../db/data/figures')[0]
 
+const userData = {
+  username: 'test',
+  email: 'test@test.test',
+  password: 'test',
+  passwordConfirmation: 'test'
+}
+
 describe('POST /figures', () => {
-  const token = jwt.sign({ sub: 123 }, secret, { expiresIn: '6h'})
+
+
+  let figure, token
+
+  beforeEach(done => {
+    User.create(userData)
+      .then(user => {
+        token = jwt.sign({ sub: user._id }, secret, { expiresIn: '6h' })
+
+        return Figure.create(figureData)
+      })
+      .then(figures => {
+        figure = figures[0]
+        done()
+      })
+  })
 
   afterEach(done => {
-    Figure.remove({})
+    User.remove({})
+      .then(() => Figure.remove({}))
       .then(() => done())
   })
 
   it('should return a 401 response', done => {
     api
-      .post('api/figures')
+      .post('/api/figures')
       .send(figureData)
       .end((err, res) => {
-        console.log(res)
         expect(res.status).to.eq(401)
         done()
       })
