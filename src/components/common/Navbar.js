@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
-
-import Auth from '../../lib/Auth'
+import { connect } from 'react-redux'
+import { logoutUser } from '../../actions/auth'
 
 class Navbar extends React.Component {
 
@@ -12,13 +12,7 @@ class Navbar extends React.Component {
       navbarOpen: false
     }
 
-    this.logout = this.logout.bind(this)
     this.toggleNavbar = this.toggleNavbar.bind(this)
-  }
-
-  logout() {
-    Auth.removeToken()
-    this.props.history.push('/')
   }
 
   toggleNavbar() {
@@ -32,6 +26,7 @@ class Navbar extends React.Component {
   }
 
   render(){
+    const { isAuthenticated, logout } = this.props
     return (
       <nav className="navbar">
         <div className="container">
@@ -54,9 +49,9 @@ class Navbar extends React.Component {
 
           <div className={`navbar-menu ${this.state.navbarOpen ? 'is-active' : ''}`}>
             <div className="navbar-end">
-              {!Auth.isAuthenticated() && <Link to="/register" className="navbar-item">Register</Link>}
-              {!Auth.isAuthenticated() && <Link to="/login" className="navbar-item">Login</Link>}
-              {Auth.isAuthenticated() && <a onClick={this.logout} className="navbar-item">Logout</a>}
+              {!isAuthenticated && <Link to="/register" className="navbar-item">Register</Link>}
+              {!isAuthenticated && <Link to="/login" className="navbar-item">Login</Link>}
+              {isAuthenticated && <a onClick={logout} className="navbar-item">Logout</a>}
             </div>
           </div>
         </div>
@@ -65,4 +60,19 @@ class Navbar extends React.Component {
   }
 }
 
-export default withRouter(Navbar)
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logoutUser())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Navbar))
