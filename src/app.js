@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import SecureRoute from './components/common/SecureRoute'
+
 import thunkMiddleware from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
@@ -12,8 +14,11 @@ import { ToastContainer } from 'react-toastify'
 
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
+
+import FiguresShow from './components/figures/Show'
+import FiguresNew from './components/figures/New'
 import Home from './components/pages/Home'
-import FiguresIndex from './components/figures/Index.js'
+import FiguresIndex from './components/figures/Index'
 
 import Navbar from './components/common/Navbar'
 import Auth from './lib/Auth'
@@ -48,6 +53,8 @@ class App extends React.Component {
           <ToastContainer position="bottom-right" hideProgressBar={true} />
 
           <Switch>
+            <SecureRoute path="/figures/new" component={FiguresNew} />
+            <Route path="/figures/:id" component={FiguresShow} />
             <Route path="/figures" component={FiguresIndex} />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
