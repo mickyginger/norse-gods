@@ -1,5 +1,8 @@
 import React from 'react'
-import axios from 'axios'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { getFigures } from '../../actions/figures'
+import { objectToArray } from '../../lib/helpers'
 
 import Card from './Card'
 
@@ -13,8 +16,7 @@ class Index extends React.Component {
   }
 
   componentDidMount(){
-    axios('/api/figures')
-      .then(res => this.setState({ figures: res.data }))
+    this.props.getFigures()
   }
 
   render(){
@@ -23,10 +25,10 @@ class Index extends React.Component {
         <div className="container">
           <div className="container columns ">
             <div className="columns is-multiline">
-              {this.state.figures.map(figure => <div key={figure._id} className="column is-one-fifth-desktop is-one-third-tablet" >
-                <h1>{figure.name}</h1>
-                <h2>{figure.oldNorse}</h2>
-
+              {this.props.figures.map(figure => <div key={figure._id} className="column is-one-fifth-desktop is-one-third-tablet" >
+                <Link to={`/figures/${figure._id}`}>
+                  <Card {...figure} />
+                </Link>
               </div>)}
 
 
@@ -40,4 +42,19 @@ class Index extends React.Component {
 
 }
 
-export default Index
+const mapStateToProps = state => {
+  return {
+    figures: objectToArray(state.figures.data)
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getFigures: () => dispatch(getFigures())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Index)
