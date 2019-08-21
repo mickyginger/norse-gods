@@ -18,6 +18,10 @@ const figureSchema = new mongoose.Schema({
     type: String,
     required: 'Please enter a home'
   },
+  image: {
+    type: String,
+    required: 'Please provide image URL'
+  },
   mother: {
     type: mongoose.Schema.ObjectId,
     ref: 'Figure'

@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 
+import Card from './Card'
+
 class Index extends React.Component {
   constructor(){
     super()
@@ -24,6 +26,7 @@ class Index extends React.Component {
               {this.state.figures.map(figure => <div key={figure._id} className="column is-one-fifth-desktop is-one-third-tablet" >
                 <h1>{figure.name}</h1>
                 <h2>{figure.oldNorse}</h2>
+
               </div>)}
 
 
