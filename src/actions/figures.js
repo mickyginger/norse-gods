@@ -1,7 +1,9 @@
 import axios from 'axios'
+import Auth from '../lib/Auth'
 import { arrayToObject } from '../lib/helpers'
 
-export const GET_FIGURES_SUCCESS = 'FIGURES_SUCCESS'
+export const GET_FIGURES_SUCCESS = 'GET_FIGURES_SUCCESS'
+export const POST_FIGURE_SUCCESS = 'POST_FIGURE_SUCCESS'
 
 export function getFiguresSuccess(data) {
   return {
@@ -20,5 +22,21 @@ export function getFigures() {
         const data = arrayToObject(res.data)
         dispatch(getFiguresSuccess(data))
       })
+  }
+}
+
+export function postFiguresSuccess(data) {
+  return {
+    type: POST_FIGURE_SUCCESS,
+    data
+  }
+}
+
+export function postFigure(formData) {
+  return function(dispatch) {
+    axios.post('/api/figures', formData, {
+      headers: { Authorization: `Bearer ${Auth.getToken()}` }
+    })
+      .then(res => dispatch(postFiguresSuccess(res.data)))
   }
 }
