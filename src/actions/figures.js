@@ -4,6 +4,8 @@ import { arrayToObject } from '../lib/helpers'
 
 export const GET_FIGURES_SUCCESS = 'GET_FIGURES_SUCCESS'
 export const POST_FIGURE_SUCCESS = 'POST_FIGURE_SUCCESS'
+export const POST_FIGURE_FAILURE = 'POST_FIGURE_FAILURE'
+export const UPDATE_FORM_DATA = 'UPDATE_FORM_DATA'
 
 export function getFiguresSuccess(data) {
   return {
@@ -25,10 +27,17 @@ export function getFigures() {
   }
 }
 
-export function postFiguresSuccess(data) {
+export function postFigureSuccess(data) {
   return {
     type: POST_FIGURE_SUCCESS,
     data
+  }
+}
+
+export function postFigureFailure(errors) {
+  return {
+    type: POST_FIGURE_FAILURE,
+    errors
   }
 }
 
@@ -37,6 +46,11 @@ export function postFigure(formData) {
     axios.post('/api/figures', formData, {
       headers: { Authorization: `Bearer ${Auth.getToken()}` }
     })
-      .then(res => dispatch(postFiguresSuccess(res.data)))
+      .then(res => dispatch(postFigureSuccess(res.data)))
+      .catch(err => dispatch(postFigureFailure(err.response.data.errors)))
   }
+}
+
+export function updateFormData(formData, errors) {
+  return { type: UPDATE_FORM_DATA, formData, errors }
 }
