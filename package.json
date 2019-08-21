@@ -10,7 +10,8 @@
     "run:server": "nodemon",
     "build": "webpack -p",
     "test": "mocha test/**/*_spec.js --require test/helper --recursive --exit",
-    "start": "yarn build && node index"
+    "start": "yarn build && node index",
+    "seed": "node db/seeds.js"
   },
   "dependencies": {
     "@babel/core": "^7.5.5",
