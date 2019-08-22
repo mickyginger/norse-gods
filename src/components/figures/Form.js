@@ -1,6 +1,27 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 
+const options = [
+  'beauty',
+  'consciousness',
+  'cunning',
+  'death',
+  'fertility',
+  'frenzy',
+  'gold',
+  'healing',
+  'love',
+  'royalty',
+  'sex',
+  'shapeshifting',
+  'sorcery',
+  'touch',
+  'trickery',
+  'war',
+  'willpower',
+  'wisdom'
+]
+
 const Form = ({ handleChange, handleSubmit, data, errors}) => {
   return (
     <section className="section">
@@ -56,6 +77,7 @@ const Form = ({ handleChange, handleSubmit, data, errors}) => {
                 <input
                   className="input"
                   name="home"
+                  placeholder="eg: Asgard"
                   onChange={handleChange}
                   value={data.home || ''}
                 />
@@ -68,18 +90,21 @@ const Form = ({ handleChange, handleSubmit, data, errors}) => {
               <label className="label">Associated With</label>
               <div className="control">
                 <div className="select is-fullwidth">
-                  <input
+                  <select
                     name="associatedWith"
                     onChange={handleChange}
                     value={data.associatedWith || ''}
                   >
-
-                  </input>
+                    <option value="">Please choose...</option>
+                    {options.map(option =>
+                      <option key={option}>{option}</option>
+                    )}
+                  </select>
                 </div>
                 {errors.associatedWith && <div className="help is-danger">{errors.associatedWith}</div>}
               </div>
             </div>
-            
+
 
             <button className="button is-dark">Submit</button>
           </form>

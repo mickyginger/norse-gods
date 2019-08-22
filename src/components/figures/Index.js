@@ -7,13 +7,6 @@ import { objectToArray } from '../../lib/helpers'
 import Card from './Card'
 
 class Index extends React.Component {
-  constructor(){
-    super()
-
-    this.state = {
-      figures: []
-    }
-  }
 
   componentDidMount(){
     this.props.getFigures()

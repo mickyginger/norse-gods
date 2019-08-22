@@ -1,59 +1,54 @@
 import React from 'react'
-import axios from 'axios'
-
+import { connect } from 'react-redux'
 import Form from './Form'
-import Auth from '../../lib/Auth'
+import { postFigure, updateFormData } from '../../actions/figures'
 
-class New extends React.Component {
+const New = ({ updateFormData, postFigure, formData, errors }) => {
 
-  constructor(){
-    super()
-
-    this.state = {
-      data: {},
-      errors: {},
-      figures: []
-    }
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-
+  function handleChange(e){
+    formData = { ...formData, [e.target.name]: e.target.value }
+    errors = { ...errors, [e.target.name]: '' }
+    updateFormData(formData, errors)
   }
 
-  handleChange(e){
-    const data = { ...this.state.data, [e.target.name]: e.target.value }
-    this.setState({ data })
-  }
-
-  handleSubmit(e){
+  function handleSubmit(e){
     e.preventDefault()
-
-    const token = Auth.getToken()
-
-    axios.post('/api/figures', this.state.data, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-      .then(() => this.props.history.push('/figures'))
-      .catch(err => this.setState({ errors: err.response.data.errors }))
+    postFigure(formData)
   }
 
-  render(){
-    return(
-      <section className="section">
-        <div className="container">
-          <div className="columns is-centered">
-            <div className="column is-half-desktop is-two-thirds-tablet">
-              <Form
-                handleChange={this.handleChange}
-                handleSubmit={this.handleSubmit}
-                data={this.state.data}
-                errors={this.state.errors}
-              />
-            </div>
+  return(
+    <section className="section">
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-half-desktop is-two-thirds-tablet">
+            <Form
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              data={formData}
+              errors={errors}
+            />
           </div>
         </div>
-      </section>
-    )
+      </div>
+    </section>
+  )
+}
+
+const mapStateToProps = state => {
+  return {
+    formData: state.figures.formData,
+    errors: state.figures.errors
   }
 }
 
-export default New
+const mapDispatchToProps = dispatch => {
+  return {
+    postFigure: (formData) => dispatch(postFigure(formData)),
+    updateFormData: (formData, errors) => dispatch(updateFormData(formData, errors))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(New)
