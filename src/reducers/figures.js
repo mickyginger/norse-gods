@@ -3,7 +3,8 @@ import {
   GET_FIGURE_SUCCESS,
   POST_FIGURE_SUCCESS,
   POST_FIGURE_FAILURE,
-  UPDATE_FORM_DATA
+  UPDATE_FORM_DATA,
+  DELETE_FIGURE_SUCCESS
 } from '../actions/figures'
 
 const initialState = {
@@ -42,6 +43,10 @@ export default function figures(state = initialState, action) {
       return {
         ...state,
         errors: action.errors
+      }
+    case DELETE_FIGURE_SUCCESS:
+      return {
+        ...state
       }
     default:
       return state

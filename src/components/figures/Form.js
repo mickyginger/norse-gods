@@ -23,6 +23,7 @@ const options = [
 ]
 
 const Form = ({ handleChange, handleSubmit, data, errors}) => {
+  // console.log(data)
   return (
     <section className="section">
       <div className="container is-fluid">

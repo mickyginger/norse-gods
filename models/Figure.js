@@ -29,6 +29,10 @@ const figureSchema = new mongoose.Schema({
   father: {
     type: mongoose.Schema.ObjectId,
     ref: 'Figure'
+  },
+  createdBy: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User'
   }
 }, {
   timestamps: true,

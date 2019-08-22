@@ -8,6 +8,7 @@ export const GET_FIGURE_SUCCESS = 'GET_FIGURE_SUCCESS'
 export const POST_FIGURE_SUCCESS = 'POST_FIGURE_SUCCESS'
 export const POST_FIGURE_FAILURE = 'POST_FIGURE_FAILURE'
 export const UPDATE_FORM_DATA = 'UPDATE_FORM_DATA'
+export const DELETE_FIGURE_SUCCESS = 'DELETE_FIGURE_SUCCESS'
 
 export function getFiguresSuccess(data) {
   return {
@@ -71,6 +72,31 @@ export function postFigure(formData) {
         history.push('/figures')
       })
       .catch(err => dispatch(postFigureFailure(err.response.data.errors)))
+  }
+}
+
+export function deleteFigureSuccess(data){
+  return {
+    type: DELETE_FIGURE_SUCCESS,
+    data
+  }
+}
+
+export function deleteFigure(id){
+  return function(dispatch){
+    axios.delete(`/api/figures/${id}`,{
+      headers: { Authorization: `Bearer ${Auth.getToken()}` }
+    })
+      .then(res => {
+        dispatch(deleteFigureSuccess(res.data))
+          .then(axios.get('/api/figures')
+            .then(res => {
+              const data = arrayToObject(res.data)
+              dispatch(getFiguresSuccess(data))
+              history.push('/figures')
+            }))
+
+      })
   }
 }
 
