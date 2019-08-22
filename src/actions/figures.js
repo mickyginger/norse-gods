@@ -47,7 +47,7 @@ export function postFigureSuccess(data) {
 export function getFigure(id){
   return function(dispatch, getState){
     const { figures } = getState()
-    if(figures.data[id]) return
+    if(figures.data[id]) return figures.data[id]
 
     axios.get(`/api/figures/${id}`)
       .then(res => dispatch(getFigureSuccess(res.data)))
