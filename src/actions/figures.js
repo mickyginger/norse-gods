@@ -22,3 +22,26 @@ export function getFigures() {
       })
   }
 }
+
+export const GET_FIGURE_SUCCESS = 'GET_FIGURE_SUCCESS'
+
+export function getFigureSuccess(data){
+  return {
+    type: GET_FIGURE_SUCCESS,
+    data
+  }
+}
+
+export function getFigure(id){
+  return function(dispatch, getState){
+    const { figures } = getState()
+    if(figures.length && figures.lastRequest > Date.now() - 1000 * 60){
+      return
+    } else {
+      axios.get(`/api/figures/${id}`)
+        .then(res => {
+          dispatch(getFigureSuccess(res))
+        })
+    }
+  }
+}
