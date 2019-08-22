@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Auth from '../lib/Auth'
+import history from '../history'
 import { arrayToObject } from '../lib/helpers'
 
 export const GET_FIGURES_SUCCESS = 'GET_FIGURES_SUCCESS'
@@ -17,7 +18,7 @@ export function getFiguresSuccess(data) {
 export function getFigures() {
   return function(dispatch, getState) {
     const { figures } = getState()
-    if(figures.lastRequest > Date.now() - 1000 * 60) return false // no need to make another request
+    if(figures.lastRequest > Date.now() - 1000 * 60 * 10) return false // no need to make another request
 
     axios.get('/api/figures')
       .then(res => {
@@ -46,7 +47,10 @@ export function postFigure(formData) {
     axios.post('/api/figures', formData, {
       headers: { Authorization: `Bearer ${Auth.getToken()}` }
     })
-      .then(res => dispatch(postFigureSuccess(res.data)))
+      .then(res => {
+        dispatch(postFigureSuccess(res.data))
+        history.push('/figures')
+      })
       .catch(err => dispatch(postFigureFailure(err.response.data.errors)))
   }
 }

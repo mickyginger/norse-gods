@@ -8,7 +8,7 @@ const New = ({ updateFormData, postFigure, formData, errors }) => {
   function handleChange(e){
     formData = { ...formData, [e.target.name]: e.target.value }
     errors = { ...errors, [e.target.name]: '' }
-    updateFormData(formData)
+    updateFormData(formData, errors)
   }
 
   function handleSubmit(e){

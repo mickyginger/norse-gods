@@ -30,6 +30,7 @@ export default function figures(state = initialState, action) {
       return {
         ...state,
         data: { ...state.data, [action.data._id]: action.data },
+        formData: {},
         errors: {}
       }
     case POST_FIGURE_FAILURE:
